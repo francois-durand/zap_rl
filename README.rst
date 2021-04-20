@@ -33,7 +33,7 @@ Zap Reinforcement Learning implements zap stochastic approximation algorithms ad
 Features
 --------
 
-* Will soon implement Zap Q-Learning.
+* Will soon implement Zap Q-Learning...
 
 -------
 Credits
