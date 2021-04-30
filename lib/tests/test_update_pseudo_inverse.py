@@ -3,7 +3,7 @@ from fractions import Fraction
 from zap_rl import update_pseudo_inverse
 
 
-def test_theorem_1():
+def test():
     """
     Preliminaries:
 
