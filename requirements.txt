@@ -1,3 +1,7 @@
+numpy
+torch
+gym
+stable_baselines3
 sphinx>=1.4
 nbsphinx
 ipykernel
