@@ -9,6 +9,7 @@ Welcome to Zap Reinforcement Learning's documentation!
    installation
    usage
    reference/index
+   coverage
    contributing
    authors
    history
