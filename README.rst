@@ -17,7 +17,7 @@ Zap Reinforcement Learning
 
 
 .. image:: https://codecov.io/gh/francois-durand/zap_rl/branch/master/graphs/badge.svg
-        :target: https://codecov.io/gh/francois-durand/zap_rl/branch/master/graphs
+        :target: https://codecov.io/gh/francois-durand/zap_rl/tree/master
         :alt: Code Coverage
 
 
