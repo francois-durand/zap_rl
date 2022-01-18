@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>zap_rl.update_pseudo_inverse &mdash; Zap Reinforcement Learning 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Zap Reinforcement Learning
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Zap Reinforcement Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zap Reinforcement Learning</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>zap_rl.update_pseudo_inverse</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for zap_rl.update_pseudo_inverse</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="update_pseudo_inverse"><a class="viewcode-back" href="../../reference/update_pseudo_inverse.html#zap_rl.update_pseudo_inverse">[docs]</a><span class="k">def</span> <span class="nf">update_pseudo_inverse</span><span class="p">(</span><span class="n">array_a</span><span class="p">,</span> <span class="n">vector_c</span><span class="p">,</span> <span class="n">vector_d</span><span class="p">,</span> <span class="n">array_a_dagger</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update the pseudo-inverse of a matrix of real numbers.</span>
+
+<span class="sd">    Bibliography: &quot;Generalized Inversion of Modified Matrices&quot;, Meyer, 1973.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array_a : ndarray</span>
+<span class="sd">        Rectangular numpy array.</span>
+<span class="sd">    vector_c : ndarray</span>
+<span class="sd">        Numpy array (vector). Length = number of rows of `array_a`.</span>
+<span class="sd">    vector_d : ndarray</span>
+<span class="sd">        Numpy array (vector). Length = number of columns of `array_a`.</span>
+<span class="sd">    array_a_dagger : ndarray</span>
+<span class="sd">        Pseudo-inverse of `array_a` (same shape as `array_a.T`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        `array_a_dagger` is updated to become the pseudo-inverse of `array_a + np.outer(vector_c, vector_d)`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">        All arrays must have real coefficients (not complex numbers).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vector_k</span> <span class="o">=</span> <span class="n">array_a_dagger</span> <span class="o">@</span> <span class="n">vector_c</span>
+    <span class="n">vector_h</span> <span class="o">=</span> <span class="n">vector_d</span> <span class="o">@</span> <span class="n">array_a_dagger</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">vector_h</span> <span class="o">@</span> <span class="n">vector_c</span>
+    <span class="n">vector_u</span> <span class="o">=</span> <span class="n">vector_c</span> <span class="o">-</span> <span class="n">array_a</span> <span class="o">@</span> <span class="n">vector_k</span>
+    <span class="n">vector_v</span> <span class="o">=</span> <span class="n">vector_d</span> <span class="o">-</span> <span class="n">vector_h</span> <span class="o">@</span> <span class="n">array_a</span>
+    <span class="n">bool_c_in_r_of_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">vector_u</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">bool_d_in_r_of_a_transpose</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">vector_v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">vector</span> <span class="o">/</span> <span class="p">(</span><span class="n">vector</span> <span class="o">@</span> <span class="n">vector</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bool_c_in_r_of_a</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">beta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bool_d_in_r_of_a_transpose</span><span class="p">:</span>
+                <span class="c1"># Theorem 6</span>
+                <span class="n">array_a_dagger</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_k</span><span class="p">,</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_k</span><span class="p">)</span> <span class="o">@</span> <span class="n">array_a_dagger</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">array_a_dagger</span> <span class="o">@</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_h</span><span class="p">),</span> <span class="n">vector_h</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="p">(</span><span class="n">dagger</span><span class="p">(</span><span class="n">vector_k</span><span class="p">)</span> <span class="o">@</span> <span class="n">array_a_dagger</span> <span class="o">@</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_h</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_k</span><span class="p">,</span> <span class="n">vector_h</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Theorem 2</span>
+                <span class="n">array_a_dagger</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_k</span><span class="p">,</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_k</span><span class="p">)</span> <span class="o">@</span> <span class="n">array_a_dagger</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">dagger</span><span class="p">(</span><span class="n">vector_v</span><span class="p">),</span> <span class="n">vector_h</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Theorem 3</span>
+            <span class="n">k_square</span> <span class="o">=</span> <span class="n">vector_k</span> <span class="o">@</span> <span class="n">vector_k</span>
+            <span class="n">v_square</span> <span class="o">=</span> <span class="n">vector_v</span> <span class="o">@</span> <span class="n">vector_v</span>
+            <span class="n">vector_p_1</span> <span class="o">=</span> <span class="o">-</span> <span class="n">k_square</span> <span class="o">/</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">vector_v</span> <span class="o">-</span> <span class="n">vector_k</span>
+            <span class="n">vector_q_1</span> <span class="o">=</span> <span class="o">-</span> <span class="n">v_square</span> <span class="o">/</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">vector_k</span> <span class="o">@</span> <span class="n">array_a_dagger</span> <span class="o">-</span> <span class="n">vector_h</span>
+            <span class="n">sigma_1</span> <span class="o">=</span> <span class="n">k_square</span> <span class="o">*</span> <span class="n">v_square</span> <span class="o">+</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">array_a_dagger</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="mi">1</span> <span class="o">/</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_v</span><span class="p">,</span> <span class="n">vector_k</span> <span class="o">@</span> <span class="n">array_a_dagger</span><span class="p">)</span>
+                <span class="o">-</span> <span class="n">beta</span> <span class="o">/</span> <span class="n">sigma_1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_p_1</span><span class="p">,</span> <span class="n">vector_q_1</span><span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># not bool_c_in_r_of_a</span>
+        <span class="k">if</span> <span class="n">bool_d_in_r_of_a_transpose</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">beta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Theorem 4</span>
+                <span class="n">array_a_dagger</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">array_a_dagger</span> <span class="o">@</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_h</span><span class="p">),</span> <span class="n">vector_h</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_k</span><span class="p">,</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_u</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Theorem 5</span>
+                <span class="n">h_square</span> <span class="o">=</span> <span class="n">vector_h</span> <span class="o">@</span> <span class="n">vector_h</span>
+                <span class="n">u_square</span> <span class="o">=</span> <span class="n">vector_u</span> <span class="o">@</span> <span class="n">vector_u</span>
+                <span class="n">vector_p_2</span> <span class="o">=</span> <span class="o">-</span> <span class="n">u_square</span> <span class="o">/</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">array_a_dagger</span> <span class="o">@</span> <span class="n">vector_h</span> <span class="o">-</span> <span class="n">vector_k</span>
+                <span class="n">vector_q_2</span> <span class="o">=</span> <span class="o">-</span> <span class="n">h_square</span> <span class="o">/</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">vector_u</span> <span class="o">-</span> <span class="n">vector_h</span>
+                <span class="n">sigma_2</span> <span class="o">=</span> <span class="n">h_square</span> <span class="o">*</span> <span class="n">u_square</span> <span class="o">+</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">array_a_dagger</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="mi">1</span> <span class="o">/</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">array_a_dagger</span> <span class="o">@</span> <span class="n">vector_h</span><span class="p">,</span> <span class="n">vector_u</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="n">beta</span> <span class="o">/</span> <span class="n">sigma_2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_p_2</span><span class="p">,</span> <span class="n">vector_q_2</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Theorem 1</span>
+            <span class="n">array_a_dagger</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">vector_k</span><span class="p">,</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_u</span><span class="p">))</span>
+                <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">dagger</span><span class="p">(</span><span class="n">vector_v</span><span class="p">),</span> <span class="n">vector_h</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">dagger</span><span class="p">(</span><span class="n">vector_v</span><span class="p">),</span> <span class="n">dagger</span><span class="p">(</span><span class="n">vector_u</span><span class="p">))</span>
+            <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, François Durand.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
